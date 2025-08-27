@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>长文本翻译测试</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-section {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .test-text {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 6px;
+            border-left: 4px solid #667eea;
+            margin: 10px 0;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        .instructions {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 20px 0;
+        }
+        .highlight {
+            background: #fff3cd;
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🌍 AI Translator 长文本翻译测试</h1>
+    
+    <div class="instructions">
+        <h3>📋 测试说明</h3>
+        <p>这个页面用于测试AI翻译插件的长文本翻译功能。请按照以下步骤进行测试：</p>
+        <ol>
+            <li>确保已经安装并配置了AI翻译插件</li>
+            <li>复制下面的<span class="highlight">长文本示例</span></li>
+            <li>在插件中粘贴并翻译</li>
+            <li>验证翻译结果是否完整显示</li>
+        </ol>
+    </div>
+
+    <div class="test-section">
+        <h3>📝 长文本示例1 (英文 → 中文)</h3>
+        <div class="test-text">Artificial intelligence (AI) is intelligence demonstrated by machines, as opposed to natural intelligence displayed by animals including humans. Leading AI textbooks define the field as the study of "intelligent agents": any system that perceives its environment and takes actions that maximize its chance of achieving its goals.
+
+The term "artificial intelligence" had previously been used to describe machines that mimic and display "human" cognitive skills that are associated with the human mind, such as "learning" and "problem-solving". This definition has since been rejected by major AI researchers who now describe AI in terms of rationality and acting rationally, which does not limit how intelligence can be articulated.
+
+AI applications include advanced web search engines (e.g., Google), recommendation systems (used by YouTube, Amazon and Netflix), understanding human speech (such as Siri and Alexa), self-driving cars (e.g., Tesla), automated decision-making and competing at the highest level in strategic game systems (such as chess and Go). As machines become increasingly capable, tasks considered to require "intelligence" are often removed from the definition of AI, a phenomenon known as the AI effect. For instance, optical character recognition is frequently excluded from things considered to be AI, having become a routine technology.</div>
+        <p><strong>预期结果：</strong> 完整的中文翻译，保持段落结构，不丢失任何内容</p>
+    </div>
+
+    <div class="test-section">
+        <h3>📝 长文本示例2 (中文 → 英文)</h3>
+        <div class="test-text">人工智能（AI）是由机器展示的智能，与包括人类在内的动物所展示的自然智能相对。领先的AI教科书将该领域定义为对"智能代理"的研究：任何能够感知其环境并采取行动以最大化实现其目标机会的系统。
+
+"人工智能"一词以前被用来描述模仿和展示与人类思维相关的"人类"认知技能的机器，例如"学习"和"解决问题"。这个定义后来被主要的AI研究人员拒绝，他们现在从理性和理性行为的角度来描述AI，这并不限制智能的表达方式。
+
+AI应用包括先进的网络搜索引擎（例如Google）、推荐系统（由YouTube、Amazon和Netflix使用）、理解人类语音（如Siri和Alexa）、自动驾驶汽车（例如Tesla）、自动化决策以及在战略游戏系统（如国际象棋和围棋）中最高水平的竞争。随着机器变得越来越有能力，需要"智能"的任务通常被从AI的定义中移除，这种现象被称为AI效应。例如，光学字符识别经常被认为不是AI，已成为一种常规技术。</div>
+        <p><strong>预期结果：</strong> 完整的英文翻译，保持段落结构，不丢失任何内容</p>
+    </div>
+
+    <div class="test-section">
+        <h3>📝 长文本示例3 (技术文档)</h3>
+        <div class="test-text">Machine learning is a method of data analysis that automates analytical model building. It is a branch of artificial intelligence based on the idea that systems can learn from data, identify patterns and make decisions with minimal human intervention.
+
+The process of learning begins with observations or data, such as examples, direct experience, or instruction, in order to look for patterns in data and make better decisions in the future based on the examples that we provide. The primary aim is to allow the computers learn automatically without human intervention or assistance and adjust actions accordingly.
+
+Machine learning algorithms build a model based on sample data, known as "training data", in order to make predictions or decisions without being explicitly programmed to do so. Machine learning algorithms are used in a wide variety of applications, such as in medicine, email filtering, speech recognition, and computer vision, where it is difficult or unfeasible to develop conventional algorithms to perform the needed tasks.</div>
+        <p><strong>预期结果：</strong> 完整的技术文档翻译，保持专业术语准确性</p>
+    </div>
+
+    <div class="test-section">
+        <h3>✅ 验证清单</h3>
+        <ul>
+            <li><input type="checkbox"> 长文本能够完整翻译，没有内容丢失</li>
+            <li><input type="checkbox"> 翻译结果保持原文的段落结构</li>
+            <li><input type="checkbox"> 没有出现格式错误或解析失败</li>
+            <li><input type="checkbox"> 翻译结果显示在专门的长文本区域</li>
+            <li><input type="checkbox"> 滚动条功能正常（如果内容过长）</li>
+            <li><input type="checkbox"> 短文本仍然显示详细的翻译信息</li>
+        </ul>
+    </div>
+
+    <div class="test-section">
+        <h3>🔧 已实现的优化</h3>
+        <ul>
+            <li><strong>智能检测：</strong>自动识别文本长度（>100字符为长文本）</li>
+            <li><strong>简化提示：</strong>长文本使用简化的翻译提示词</li>
+            <li><strong>直接显示：</strong>长文本翻译结果直接显示，不进行复杂解析</li>
+            <li><strong>样式优化：</strong>专门的长文本显示样式，支持滚动</li>
+            <li><strong>Token调整：</strong>长文本使用更大的max_tokens值（4000）</li>
+            <li><strong>安全处理：</strong>HTML转义防止XSS攻击</li>
+        </ul>
+    </div>
+</body>
+</html>

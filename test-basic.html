@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>插件基本功能测试</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-section {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .test-input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin: 10px 0;
+            font-size: 14px;
+        }
+        .test-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .test-btn:hover {
+            background: #5a67d8;
+        }
+        .result {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+            border-left: 4px solid #667eea;
+        }
+        .error {
+            border-left-color: #dc3545;
+            background: #f8d7da;
+        }
+        .success {
+            border-left-color: #28a745;
+            background: #d4edda;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 AI Translator 基本功能测试</h1>
+    
+    <div class="test-section">
+        <h3>📋 测试说明</h3>
+        <p>此页面用于测试AI翻译插件的基本功能。请确保：</p>
+        <ol>
+            <li>插件已正确安装并启用</li>
+            <li>已在插件设置中配置API Key</li>
+            <li>插件权限设置正确</li>
+        </ol>
+    </div>
+
+    <div class="test-section">
+        <h3>🔧 基础功能测试</h3>
+        <button class="test-btn" onclick="testChromeAPI()">测试Chrome API</button>
+        <button class="test-btn" onclick="testStorageAPI()">测试存储API</button>
+        <button class="test-btn" onclick="testTextClassifier()">测试文本分类</button>
+        <div id="basic-test-result"></div>
+    </div>
+
+    <div class="test-section">
+        <h3>📝 文本分类测试</h3>
+        <input type="text" class="test-input" id="test-text" placeholder="输入要测试的文本...">
+        <button class="test-btn" onclick="classifyText()">分类测试</button>
+        <div id="classify-result"></div>
+    </div>
+
+    <div class="test-section">
+        <h3>🌍 快速翻译测试</h3>
+        <input type="text" class="test-input" id="quick-translate" placeholder="输入要翻译的文本...">
+        <select id="quick-lang" class="test-input" style="width: auto;">
+            <option value="zh">中文</option>
+            <option value="en">英语</option>
+        </select>
+        <button class="test-btn" onclick="quickTranslate()">快速翻译</button>
+        <div id="quick-result"></div>
+    </div>
+
+    <div class="test-section">
+        <h3>📊 测试结果</h3>
+        <div id="test-summary">
+            <p>点击上方测试按钮开始测试...</p>
+        </div>
+    </div>
+
+    <script>
+        let testResults = [];
+
+        function addResult(test, status, message) {
+            testResults.push({ test, status, message, timestamp: new Date() });
+            updateTestSummary();
+        }
+
+        function updateTestSummary() {
+            const summary = document.getElementById('test-summary');
+            const passed = testResults.filter(r => r.status === 'success').length;
+            const failed = testResults.filter(r => r.status === 'error').length;
+            
+            summary.innerHTML = `
+                <h4>📈 测试统计</h4>
+                <p>✅ 通过: ${passed}</p>
+                <p>❌ 失败: ${failed}</p>
+                <p>📊 总计: ${testResults.length}</p>
+                <h4>📋 详细结果</h4>
+                ${testResults.map(r => `
+                    <div class="result ${r.status}">
+                        <strong>${r.test}</strong> (${r.timestamp.toLocaleTimeString()})
+                        <br>${r.message}
+                    </div>
+                `).join('')}
+            `;
+        }
+
+        function testChromeAPI() {
+            const result = document.getElementById('basic-test-result');
+            try {
+                if (typeof chrome === 'undefined') {
+                    throw new Error('Chrome API不可用');
+                }
+                
+                if (!chrome.runtime) {
+                    throw new Error('Chrome Runtime API不可用');
+                }
+                
+                if (!chrome.storage) {
+                    throw new Error('Chrome Storage API不可用');
+                }
+
+                result.innerHTML = '<div class="result success">✅ Chrome API 正常</div>';
+                addResult('Chrome API测试', 'success', '所有必需的Chrome API都可用');
+            } catch (error) {
+                result.innerHTML = `<div class="result error">❌ Chrome API错误: ${error.message}</div>`;
+                addResult('Chrome API测试', 'error', error.message);
+            }
+        }
+
+        function testStorageAPI() {
+            const result = document.getElementById('basic-test-result');
+            try {
+                chrome.storage.sync.get(['test'], (data) => {
+                    try {
+                        chrome.storage.sync.set({ test: 'value' }, () => {
+                            result.innerHTML = '<div class="result success">✅ 存储API正常</div>';
+                            addResult('存储API测试', 'success', '存储读写功能正常');
+                        });
+                    } catch (error) {
+                        result.innerHTML = `<div class="result error">❌ 存储API错误: ${error.message}</div>`;
+                        addResult('存储API测试', 'error', error.message);
+                    }
+                });
+            } catch (error) {
+                result.innerHTML = `<div class="result error">❌ 存储API错误: ${error.message}</div>`;
+                addResult('存储API测试', 'error', error.message);
+            }
+        }
+
+        function testTextClassifier() {
+            const result = document.getElementById('basic-test-result');
+            try {
+                // 创建一个简单的测试分类器
+                function isChineseText(text) {
+                    const chineseRegex = /[\u4e00-\u9fff]/g;
+                    const chineseChars = text.match(chineseRegex);
+                    const totalChars = text.replace(/\s/g, '').length;
+                    return chineseChars && chineseChars.length >= totalChars * 0.6;
+                }
+
+                function isWordOrPhrase(text) {
+                    const trimmed = text.trim();
+                    if (!trimmed) return false;
+                    
+                    const sentenceEnders = /[.!?。！？；;:：]/;
+                    if (sentenceEnders.test(trimmed)) return false;
+                    
+                    if (!isChineseText(trimmed)) {
+                        const words = trimmed.split(/\s+/);
+                        if (words.length === 1) return true;
+                        if (words.length <= 5 && trimmed.length < 60) return true;
+                        return false;
+                    }
+                    
+                    const cleanText = trimmed.replace(/[，。！？；：""''（）【】《》、]/g, '');
+                    const chineseCharCount = (cleanText.match(/[\u4e00-\u9fff]/g) || []).length;
+                    if (chineseCharCount >= 1 && chineseCharCount <= 8) return true;
+                    if (chineseCharCount <= 15) return true;
+                    return false;
+                }
+
+                // 测试用例
+                const tests = [
+                    { text: 'hello', expected: true },
+                    { text: '美丽', expected: true },
+                    { text: '画龙点睛', expected: true },
+                    { text: 'Hello, how are you?', expected: false },
+                    { text: '今天天气很好。', expected: false }
+                ];
+
+                let passed = 0;
+                tests.forEach(test => {
+                    const result = isWordOrPhrase(test.text);
+                    if (result === test.expected) passed++;
+                });
+
+                if (passed === tests.length) {
+                    result.innerHTML = '<div class="result success">✅ 文本分类器正常</div>';
+                    addResult('文本分类器测试', 'success', `所有测试通过 (${passed}/${tests.length})`);
+                } else {
+                    result.innerHTML = `<div class="result error">❌ 文本分类器异常: ${passed}/${tests.length} 通过</div>`;
+                    addResult('文本分类器测试', 'error', `${passed}/${tests.length} 通过`);
+                }
+            } catch (error) {
+                result.innerHTML = `<div class="result error">❌ 文本分类器错误: ${error.message}</div>`;
+                addResult('文本分类器测试', 'error', error.message);
+            }
+        }
+
+        function classifyText() {
+            const text = document.getElementById('test-text').value;
+            const result = document.getElementById('classify-result');
+            
+            if (!text.trim()) {
+                result.innerHTML = '<div class="result error">❌ 请输入测试文本</div>';
+                return;
+            }
+
+            try {
+                function isChineseText(text) {
+                    const chineseRegex = /[\u4e00-\u9fff]/g;
+                    const chineseChars = text.match(chineseRegex);
+                    const totalChars = text.replace(/\s/g, '').length;
+                    return chineseChars && chineseChars.length >= totalChars * 0.6;
+                }
+
+                function isWordOrPhrase(text) {
+                    const trimmed = text.trim();
+                    if (!trimmed) return false;
+                    
+                    const sentenceEnders = /[.!?。！？；;:：]/;
+                    if (sentenceEnders.test(trimmed)) return false;
+                    
+                    if (!isChineseText(trimmed)) {
+                        const words = trimmed.split(/\s+/);
+                        if (words.length === 1) return true;
+                        if (words.length <= 5 && trimmed.length < 60) return true;
+                        return false;
+                    }
+                    
+                    const cleanText = trimmed.replace(/[，。！？；：""''（）【】《》、]/g, '');
+                    const chineseCharCount = (cleanText.match(/[\u4e00-\u9fff]/g) || []).length;
+                    if (chineseCharCount >= 1 && chineseCharCount <= 8) return true;
+                    if (chineseCharCount <= 15) return true;
+                    return false;
+                }
+
+                const isWord = isWordOrPhrase(text);
+                const isChinese = isChineseText(text);
+                
+                result.innerHTML = `
+                    <div class="result success">
+                        <strong>📝 文本分析结果:</strong><br>
+                        文本: "${text}"<br>
+                        语言: ${isChinese ? '中文' : '英文'}<br>
+                        类型: ${isWord ? '单词/词语/成语' : '句子'}<br>
+                        字符数: ${text.length}<br>
+                        预期翻译模式: ${isWord ? '详细翻译' : '简化翻译'}
+                    </div>
+                `;
+            } catch (error) {
+                result.innerHTML = `<div class="result error">❌ 分类错误: ${error.message}</div>`;
+            }
+        }
+
+        function quickTranslate() {
+            const text = document.getElementById('quick-translate').value;
+            const lang = document.getElementById('quick-lang').value;
+            const result = document.getElementById('quick-result');
+            
+            if (!text.trim()) {
+                result.innerHTML = '<div class="result error">❌ 请输入要翻译的文本</div>';
+                return;
+            }
+
+            result.innerHTML = '<div class="result">🔄 翻译功能需要实际的插件环境，此处仅测试文本分析...</div>';
+            
+            // 模拟分析结果
+            try {
+                function isChineseText(text) {
+                    const chineseRegex = /[\u4e00-\u9fff]/g;
+                    const chineseChars = text.match(chineseRegex);
+                    const totalChars = text.replace(/\s/g, '').length;
+                    return chineseChars && chineseChars.length >= totalChars * 0.6;
+                }
+
+                function isWordOrPhrase(text) {
+                    const trimmed = text.trim();
+                    if (!trimmed) return false;
+                    
+                    const sentenceEnders = /[.!?。！？；;:：]/;
+                    if (sentenceEnders.test(trimmed)) return false;
+                    
+                    if (!isChineseText(trimmed)) {
+                        const words = trimmed.split(/\s+/);
+                        if (words.length === 1) return true;
+                        if (words.length <= 5 && trimmed.length < 60) return true;
+                        return false;
+                    }
+                    
+                    const cleanText = trimmed.replace(/[，。！？；：""''（）【】《》、]/g, '');
+                    const chineseCharCount = (cleanText.match(/[\u4e00-\u9fff]/g) || []).length;
+                    if (chineseCharCount >= 1 && chineseCharCount <= 8) return true;
+                    if (chineseCharCount <= 15) return true;
+                    return false;
+                }
+
+                const isWord = isWordOrPhrase(text);
+                const isChinese = isChineseText(text);
+                
+                result.innerHTML = `
+                    <div class="result success">
+                        <strong>🎯 翻译模式分析:</strong><br>
+                        文本: "${text}"<br>
+                        目标语言: ${lang === 'zh' ? '中文' : '英文'}<br>
+                        文本类型: ${isWord ? '单词/词语/成语' : '句子'}<br>
+                        翻译模式: ${isWord ? '详细翻译（包含读音、词性、解释等）' : '简化翻译（直接翻译结果）'}
+                    </div>
+                `;
+            } catch (error) {
+                result.innerHTML = `<div class="result error">❌ 分析错误: ${error.message}</div>`;
+            }
+        }
+
+        // 页面加载时自动测试Chrome API
+        window.onload = function() {
+            testChromeAPI();
+        };
+    </script>
+</body>
+</html>

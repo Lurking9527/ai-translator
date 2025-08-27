@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI Translator</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🌍 AI Translator</h1>
+      <div class="header-buttons">
+        <button id="settingsBtn" class="icon-btn">⚙️</button>
+        <button id="historyBtn" class="icon-btn">📚</button>
+      </div>
+    </div>
+
+    <div id="mainView" class="view">
+      <div class="input-section">
+        <textarea id="inputText" placeholder="输入要翻译的文本..." rows="4"></textarea>
+        <div class="controls">
+          <div class="language-selector">
+            <label for="targetLang" class="lang-label">目标语言：</label>
+            <select id="targetLang">
+              <option value="zh">中文</option>
+              <option value="en">英语</option>
+            </select>
+          </div>
+          <button id="translateBtn" class="primary-btn">翻译</button>
+        </div>
+        <div class="input-hint">
+          💡 按 Enter 快速翻译，Shift+Enter 换行
+        </div>
+      </div>
+
+      <div id="resultSection" class="result-section" style="display: none;">
+        <div class="result-header">
+          <h3>翻译结果</h3>
+          <button id="copyBtn" class="icon-btn">📋</button>
+        </div>
+        <div id="translationResult" class="translation-result"></div>
+      </div>
+    </div>
+
+    <div id="settingsView" class="view" style="display: none;">
+      <h2>设置</h2>
+      <div class="settings-form">
+        <div class="form-group">
+          <label for="apiKey">API Key:</label>
+          <input type="password" id="apiKey" placeholder="输入智谱AI API Key">
+        </div>
+        <div class="form-group">
+          <label for="model">模型:</label>
+          <select id="model">
+            <option value="glm-4.5">GLM-4.5</option>
+            <option value="glm-4.5-air">GLM-4.5-Air</option>
+          </select>
+        </div>
+        <div class="settings-buttons">
+          <button id="saveSettings" class="primary-btn">保存</button>
+          <button id="cancelSettings" class="secondary-btn">取消</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="historyView" class="view" style="display: none;">
+      <h2>历史记录</h2>
+      <div class="history-controls">
+        <button id="clearHistory" class="secondary-btn">清空历史</button>
+      </div>
+      <div id="historyList" class="history-list"></div>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

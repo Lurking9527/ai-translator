@@ -1,0 +1,32 @@
+<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- 定义渐变 -->
+  <defs>
+    <linearGradient id="gradient16" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="gradient216" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f093fb;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#f5576c;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- 外圆背景 -->
+  <circle cx="8" cy="8" r="7.5" fill="url(#gradient16)"/>
+  <circle cx="8" cy="8" r="7" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="0.5"/>
+  
+  <!-- 地球符号 -->
+  <path d="M8 2.5C5 2.5 2.5 5 2.5 8C2.5 11 5 13.5 8 13.5C11 13.5 13.5 11 13.5 8C13.5 5 11 2.5 8 2.5Z" 
+        fill="none" stroke="white" stroke-width="0.8" stroke-linecap="round"/>
+  
+  <!-- 经纬线 -->
+  <path d="M8 2.5V13.5M2.5 8H13.5M4 4C4 4 6 6 8 6C10 6 12 4 12 4M4 12C4 12 6 10 8 10C10 10 12 12 12 12" 
+        stroke="white" stroke-width="0.6" stroke-linecap="round" opacity="0.8"/>
+  
+  <!-- 语言切换箭头 -->
+  <path d="M5.5 5.5L7.5 3.5L9.5 5.5M10.5 10.5L8.5 12.5L6.5 10.5" 
+        stroke="white" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  
+  <!-- 中心点 -->
+  <circle cx="8" cy="8" r="1" fill="white"/>
+</svg>

@@ -1,0 +1,66 @@
+<svg width="128" height="128" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- 定义渐变和阴影 -->
+  <defs>
+    <linearGradient id="gradient128" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#764ba2;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#8b5cf6;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="gradient2128" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f093fb;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#f5576c;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#4facfe;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow128">
+      <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="rgba(0,0,0,0.3)"/>
+    </filter>
+    <filter id="innerShadow128">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="3"/>
+      <feOffset dx="0" dy="3" result="offsetblur"/>
+      <feFlood flood-color="rgba(0,0,0,0.4)"/>
+      <feComposite in2="offsetblur" operator="in"/>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <radialGradient id="highlight128">
+      <stop offset="0%" style="stop-color:rgba(255,255,255,0.8);stop-opacity:1" />
+      <stop offset="100%" style="stop-color:rgba(255,255,255,0);stop-opacity:0" />
+    </radialGradient>
+  </defs>
+  
+  <!-- 外圆背景 -->
+  <circle cx="64" cy="64" r="60" fill="url(#gradient128)" filter="url(#shadow128)"/>
+  <circle cx="64" cy="64" r="56" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2"/>
+  
+  <!-- 地球符号 -->
+  <path d="M64 20C40 20 20 40 20 64C20 88 40 108 64 108C88 108 108 88 108 64C108 40 88 20 64 20Z" 
+        fill="none" stroke="white" stroke-width="3" stroke-linecap="round"/>
+  
+  <!-- 经纬线 -->
+  <path d="M64 20V108M20 64H108M32 32C32 32 48 48 64 48C80 48 96 32 96 32M32 96C32 96 48 80 64 80C80 80 96 96 96 96" 
+        stroke="white" stroke-width="2.5" stroke-linecap="round" opacity="0.8"/>
+  
+  <!-- 语言切换箭头 -->
+  <path d="M44 44L60 28L76 44M84 84L68 100L52 84" 
+        stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  
+  <!-- 中心点 -->
+  <circle cx="64" cy="64" r="5" fill="white"/>
+  
+  <!-- 高光效果 -->
+  <ellipse cx="48" cy="40" rx="12" ry="8" fill="rgba(255,255,255,0.3)"/>
+  
+  <!-- 装饰性元素 -->
+  <circle cx="32" cy="48" r="3" fill="rgba(255,255,255,0.6)"/>
+  <circle cx="96" cy="80" r="3" fill="rgba(255,255,255,0.6)"/>
+  <circle cx="80" cy="32" r="2" fill="rgba(255,255,255,0.4)"/>
+  <circle cx="48" cy="96" r="2" fill="rgba(255,255,255,0.4)"/>
+  
+  <!-- 内圈装饰 -->
+  <circle cx="64" cy="64" r="50" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="1" stroke-dasharray="2,4"/>
+  
+  <!-- 顶部高光 -->
+  <ellipse cx="64" cy="30" rx="25" ry="15" fill="url(#highlight128)" opacity="0.6"/>
+</svg>
