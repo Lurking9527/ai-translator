@@ -219,7 +219,7 @@ class ContentTranslator {
         }
         
         // 显示通知
-        this.showNotification('正在翻译选中的文本...');
+        // this.showNotification('正在翻译选中的文本...');
       } else {
         throw new Error('浏览器限制了自动打开功能，请手动点击插件图标');
       }
