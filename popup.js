@@ -5,6 +5,8 @@ class PopupManager {
       this.currentView = 'main';
       this.isVisible = true;
       this.hasSelectedTextJustFilled = false;
+      this.isCurrentlyTranslating = false;
+      this.lastTranslatedText = null;
       
       // 逐步初始化，每一步都进行错误检查
       this.initializeElements();
@@ -301,6 +303,16 @@ class PopupManager {
       return;
     }
     
+    // 检查是否正在翻译相同的内容，避免重复翻译
+    if (this.isCurrentlyTranslating && this.lastTranslatedText === text) {
+      console.log('⚠️ Already translating the same text, skipping duplicate translation');
+      return;
+    }
+    
+    // 标记当前正在翻译的内容
+    this.isCurrentlyTranslating = true;
+    this.lastTranslatedText = text;
+    
     const settings = await chrome.storage.sync.get(['apiKey', 'model']);
     if (!settings.apiKey) {
       this.showError('请先在设置中配置API Key');
@@ -426,6 +438,9 @@ class PopupManager {
       this.showError('翻译失败，请检查网络连接和API Key');
     } finally {
       this.hideLoading();
+      // 重置翻译状态，允许下一次翻译
+      this.isCurrentlyTranslating = false;
+      this.lastTranslatedText = null;
     }
   }
 
@@ -792,6 +807,20 @@ class PopupManager {
     const history = await chrome.storage.local.get(['translationHistory']);
     const newHistory = history.translationHistory || [];
     
+    // 检查是否已经存在相同的翻译记录（原文、翻译结果和目标语言都相同）
+    const existingIndex = newHistory.findIndex(item => 
+      item.original === original && 
+      item.translation === translation && 
+      item.targetLang === this.targetLang.value
+    );
+    
+    // 如果存在相同的记录，移除旧的
+    if (existingIndex !== -1) {
+      newHistory.splice(existingIndex, 1);
+      console.log('🗑️ Removed duplicate history entry');
+    }
+    
+    // 添加新的历史记录
     newHistory.unshift({
       original,
       translation,
@@ -856,10 +885,14 @@ class PopupManager {
         
         // 只处理最近30秒内选中的文本
         if (timeDiff < 30000) {
-          console.log('✅ Found selected text to fill:', selectedData.selectedTextForTranslation);
+          // 检查输入框是否已经有相同的内容，避免重复填充
+          if (this.inputText.value === selectedData.selectedTextForTranslation) {
+            console.log('⚠️ Selected text already in input box, skipping duplicate fill');
+            await chrome.storage.local.remove(['selectedTextForTranslation', 'selectedTextTimestamp']);
+            return;
+          }
           
-          // 使用更直接的方法 - 立即设置值
-          const textToFill = selectedData.selectedTextForTranslation;
+          console.log('✅ Found selected text to fill:', selectedData.selectedTextForTranslation);
           
           // 清除存储中的数据
           await chrome.storage.local.remove(['selectedTextForTranslation', 'selectedTextTimestamp']);
@@ -870,7 +903,7 @@ class PopupManager {
           // 使用requestAnimationFrame确保DOM已准备好
           requestAnimationFrame(() => {
             console.log('🎯 Filling text in requestAnimationFrame');
-            this.fillTextAndAutoTranslate(textToFill);
+            this.fillTextAndAutoTranslate(selectedData.selectedTextForTranslation);
           });
           
         } else {
@@ -1043,6 +1076,12 @@ class PopupManager {
       console.log('DOM translate button exists:', !!translateBtn);
       
       if (inputElement && translateBtn) {
+        // 检查是否已经有相同的内容，避免重复填充
+        if (inputElement.value === text) {
+          console.log('⚠️ Text already in input box, skipping duplicate fill');
+          return;
+        }
+        
         // 直接设置值
         inputElement.value = text;
         
@@ -1064,7 +1103,7 @@ class PopupManager {
         setTimeout(() => {
           console.log('🚀 Auto translating...');
           this.translate();
-        }, 500);
+        }, 800);
         
         // 最终验证
         setTimeout(() => {
