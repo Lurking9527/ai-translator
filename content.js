@@ -149,6 +149,13 @@ class ContentTranslator {
         throw new Error('Chrome storage API not available');
       }
       
+      // 检查API Key是否配置
+      const hasApiKey = await this.checkApiKey();
+      if (!hasApiKey) {
+        this.showApiKeyNotification();
+        return;
+      }
+      
       // 给用户反馈
       if (this.translateButton) {
         this.translateButton.innerHTML = '🔄 打开插件...';
@@ -266,6 +273,52 @@ class ContentTranslator {
         this.hideTranslateButton();
       }, 10000);
     }
+  }
+
+  async checkApiKey() {
+    try {
+      const result = await chrome.storage.sync.get(['apiKey']);
+      return !!(result.apiKey && result.apiKey.trim());
+    } catch (error) {
+      console.error('Error checking API key:', error);
+      return false;
+    }
+  }
+
+  showApiKeyNotification() {
+    const notification = document.createElement('div');
+    notification.style.cssText = `
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #ff6b6b;
+      color: white;
+      padding: 16px 20px;
+      border-radius: 8px;
+      font-size: 14px;
+      z-index: 10001;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      max-width: 350px;
+      word-wrap: break-word;
+      line-height: 1.5;
+    `;
+    notification.innerHTML = `
+      <strong>⚠️ 未配置API Key</strong><br>
+      请先获取智谱AI API Key才能使用翻译功能<br>
+      <a href="https://www.bigmodel.cn/invite?icode=wIVx3VnUIStw9%2FfZRMafhpmwcr074zMJTpgMb8zZZvg%3D" 
+         target="_blank" 
+         style="color: #fff; text-decoration: underline; font-weight: bold;">
+        立即注册获取API Key →
+      </a>
+    `;
+    
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+      if (notification.parentNode) {
+        notification.remove();
+      }
+    }, 8000);
   }
 
   async tryOpenPluginDirectly() {
